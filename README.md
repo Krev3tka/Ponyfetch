@@ -1,5 +1,6 @@
 # Ponyfetch
 
+goida goida zov svo svo zzzzzzz zoooov
 A lightweight, cross-platform CLI system information utility written in Go. Like `fastfetch` or `neofetch`, but it features cute pony ASCII arts instead of boring OS logos.
 
 ## Features
