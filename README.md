@@ -28,6 +28,7 @@ Available Flags:
 | `-p` | `--pony` | Pony name for ASCII-art | `twilight` |
 | `-s` | `--size` | Art size (`little` or `normal`) | `normal` |
 | `-h` | `--help` | Show manual for utility | |
+| `-c` | `--color` | Art color (all ANSI colors, like `red`, `blue`, `green`, etc.)| reset |
 
 ```Bash
 # Run with default Twilight art
