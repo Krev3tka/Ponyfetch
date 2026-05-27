@@ -10,22 +10,25 @@ import (
 )
 
 func GetCPU() string {
-	file, err := os.Open("/proc/сpuinfo")
+	file, err := os.Open("/proc/cpuinfo")
 	if err != nil {
-		return "Unknown CPU"
+		return "Unknown CPU (open err)"
 	}
 	defer file.Close()
 
 	scanner := bufio.NewScanner(file)
-	line := scanner.Text()
-	if strings.HasPrefix(line, "model name") {
-		parts := strings.Split(line, ":")
-		if len(parts) > 1 {
-			return strings.TrimSpace(parts[1])
+	for scanner.Scan() {
+		line := scanner.Text()
+
+		if strings.Contains(strings.ToLower(line), "model name") {
+			parts := strings.Split(line, ":")
+			if len(parts) > 1 {
+				return strings.TrimSpace(parts[1])
+			}
 		}
 	}
 
-	return "Unknown CPU"
+	return "Unknown CPU (not found in cpuinfo)"
 }
 
 func parseMeminfo() (totalGB, usedGB float64) {
