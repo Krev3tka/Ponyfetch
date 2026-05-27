@@ -2,28 +2,51 @@ package fetch
 
 import (
 	"fmt"
+	"path"
 	"ponyfetch"
+	"ponyfetch/pkg/colors"
+	"regexp"
 	"strings"
+)
+
+const (
+	NormalArtWidth = 61
+	LittleArtWidth = 36
 )
 
 func GetArt(ponyName string, size string) string {
 	filename := ponyName + ".txt"
 
 	if size == "little" {
-		filename = filename[:len(filename)-4] + "_little.txt"
+		base := strings.TrimSuffix(filename, path.Ext(filename))
+		filename = base + "_little.txt"
 	}
 
 	art, err := ponyfetch.AssetsFS.ReadFile("assets/" + filename)
 	if err != nil {
-		fmt.Println("Error: failed to get art: ", err)
+		fmt.Printf("Warning: Pony '%s' not found, falling back to twilight\n", ponyName)
+
+		defaultFilename := "twilight.txt"
+		if size == "little" {
+			defaultFilename = "twilight_little.txt"
+		}
+
+		art, _ = ponyfetch.AssetsFS.ReadFile("assets/" + defaultFilename)
 	}
 
 	return string(art)
 }
 
-func PrintFetch(ponyName string, size string) {
+func PrintFetch(ponyName string, size string, color string) {
+	if size != "little" && size != "normal" {
+		size = "normal"
+	}
+
 	artRaw := GetArt(ponyName, size)
 	artLines := strings.Split(artRaw, "\n")
+	colorCode := colors.GetColorCode(color)
+	resetCode := colors.GetColorCode("reset")
+	re := regexp.MustCompile(`\x1b\[[0-9;]*[a-zA-Z]`)
 
 	var infoLines []string
 
@@ -44,9 +67,9 @@ func PrintFetch(ponyName string, size string) {
 		maxLines = len(infoLines)
 	}
 
-	artWidth := 61
+	artWidth := NormalArtWidth
 	if size == "little" {
-		artWidth = 36
+		artWidth = LittleArtWidth
 	}
 
 	for i := 0; i < maxLines; i++ {
@@ -61,7 +84,8 @@ func PrintFetch(ponyName string, size string) {
 			infoPart = infoLines[i]
 		}
 
-		currentArtLen := len([]rune(artPart))
+		cleanArtLine := re.ReplaceAllString(artPart, "")
+		currentArtLen := len([]rune(cleanArtLine))
 
 		var padding string
 		if currentArtLen < artWidth {
@@ -70,6 +94,14 @@ func PrintFetch(ponyName string, size string) {
 			padding = " "
 		}
 
-		fmt.Printf("%s%s   %s\n", artPart, padding, infoPart)
+		var finalArtOutput string
+
+		if color == "reset" {
+			finalArtOutput = artPart
+		} else {
+			finalArtOutput = colorCode + cleanArtLine + resetCode
+		}
+
+		fmt.Printf("%s%s   %s\n", finalArtOutput, padding, infoPart)
 	}
 }
