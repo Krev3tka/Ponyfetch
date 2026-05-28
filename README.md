@@ -47,4 +47,11 @@ ponyfetch -p fluttershy -s little
 ponyfetch --pony=unknown_pony_name
 ```
 
-📜 LicenseThis project is licensed under the GNU General Public License v3.0 - see the [LICENSE](LICENSE) file for details.
+## Roadmap
+- [x] Default and custom ASCII arts
+- [x] Dynamic padding support for art and info printing
+- [ ] Full system and hardware info parsing
+- [ ] Configuration with .toml files
+
+License
+This project is licensed under the GNU General Public License v3.0 - see the [LICENSE](LICENSE) file for details.
