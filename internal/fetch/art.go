@@ -2,16 +2,12 @@ package fetch
 
 import (
 	"fmt"
+	"os"
 	"path"
 	"ponyfetch"
 	"ponyfetch/pkg/colors"
 	"regexp"
 	"strings"
-)
-
-const (
-	NormalArtWidth = 61
-	LittleArtWidth = 36
 )
 
 func GetArt(ponyName string, size string) string {
@@ -37,12 +33,36 @@ func GetArt(ponyName string, size string) string {
 	return string(art)
 }
 
-func PrintFetch(ponyName string, size string, color string) {
+func GetArtFromFile(filename string, size string) string {
+	if !strings.HasSuffix(filename, ".txt") {
+		defaultFilename := "twilight.txt"
+		if size == "little" {
+			defaultFilename = "twilight_little.txt"
+		}
+
+		art, _ := ponyfetch.AssetsFS.ReadFile("assets/" + defaultFilename)
+
+		return string(art)
+	}
+
+	art, _ := os.ReadFile(filename)
+
+	return string(art)
+}
+
+func PrintFetch(ponyName string, size string, color string, filename string) {
 	if size != "little" && size != "normal" {
 		size = "normal"
 	}
 
-	artRaw := GetArt(ponyName, size)
+	var artRaw string
+
+	if filename != "" {
+		artRaw = GetArtFromFile(filename, size)
+	} else {
+		artRaw = GetArt(ponyName, size)
+	}
+
 	artLines := strings.Split(artRaw, "\n")
 	colorCode := colors.GetColorCode(color)
 	resetCode := colors.GetColorCode("reset")
@@ -69,9 +89,14 @@ func PrintFetch(ponyName string, size string, color string) {
 		maxLines = len(infoLines)
 	}
 
-	artWidth := NormalArtWidth
-	if size == "little" {
-		artWidth = LittleArtWidth
+	artWidth := 0
+	for _, line := range artLines {
+		cleanLine := re.ReplaceAllString(line, "")
+		cleanLine = strings.ReplaceAll(cleanLine, "\r", "")
+		lineLen := len([]rune(cleanLine))
+		if lineLen > artWidth {
+			artWidth = lineLen
+		}
 	}
 
 	for i := 0; i < maxLines; i++ {
@@ -84,6 +109,11 @@ func PrintFetch(ponyName string, size string, color string) {
 
 		if i < len(infoLines) {
 			infoPart = infoLines[i]
+		}
+
+		if artWidth == 0 {
+			fmt.Println(infoPart)
+			continue
 		}
 
 		cleanArtLine := re.ReplaceAllString(artPart, "")
