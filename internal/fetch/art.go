@@ -57,9 +57,11 @@ func PrintFetch(ponyName string, size string, color string) {
 	infoLines = append(infoLines, "")
 	infoLines = append(infoLines, "OS: "+GetOSInfo())
 	infoLines = append(infoLines, "Shell: "+GetShell())
+	infoLines = append(infoLines, "DE: "+GetDesktopEnvironment())
 	infoLines = append(infoLines, "")
 	infoLines = append(infoLines, "Hardware")
 	infoLines = append(infoLines, "CPU: "+GetCPU())
+	infoLines = append(infoLines, "GPU: "+GetGPU())
 	infoLines = append(infoLines, fmt.Sprintf("Memory: %s / %s", GetUsedRAM(), GetTotalRAM()))
 
 	maxLines := len(artLines)

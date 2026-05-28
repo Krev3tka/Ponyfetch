@@ -45,3 +45,22 @@ func GetOSInfo() string {
 	}
 	return "Linux"
 }
+
+func GetDesktopEnvironment() string {
+	currentDesktop := os.Getenv("XDG_CURRENT_DESKTOP")
+	if currentDesktop != "" {
+		return currentDesktop
+	}
+
+	currentDesktop = os.Getenv("DESKTOP_SESSION")
+	if currentDesktop != "" {
+		return currentDesktop
+	}
+
+	currentDesktop = os.Getenv("XDG_SESSION_DESKTOP")
+	if currentDesktop != "" {
+		return currentDesktop
+	}
+
+	return "Unknown DE/WM"
+}

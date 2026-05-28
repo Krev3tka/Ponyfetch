@@ -77,13 +77,9 @@ func GetOSInfo() string {
 		return name + " " + marketing + " " + version
 	}
 
-	return strings.TrimSpace(string(name + " " + version))
+	return strings.TrimSpace(name + " " + version)
 }
 
-func PrintHeader() {
-	hostname := GetHostname()
-
-	fmt.Printf("%s @ %s\n", GetUser(), hostname)
-	fmt.Printf(strings.Repeat("-", len(GetUser())+len(hostname)+3))
-	fmt.Println()
+func GetDesktopEnvironment() string {
+	return "Aqua"
 }

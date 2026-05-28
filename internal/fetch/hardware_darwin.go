@@ -95,3 +95,18 @@ func parseVmStatValue(line string) int64 {
 	}
 	return value
 }
+
+func GetGPU() string {
+	out, err := exec.Command("sysctl", "-n", "machdep.cpu.brand_string").Output()
+	if err != nil {
+		return "Unknown GPU"
+	}
+
+	gpuName := strings.TrimSpace(string(out))
+
+	if gpuName != "" {
+		return gpuName
+	}
+
+	return "Unknown GPU"
+}
