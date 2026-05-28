@@ -11,10 +11,10 @@ A lightweight, cross-platform CLI system information utility written in Go. Like
 ### From Source
 Make sure you have Go installed, then clone and build the project:
 ```bash
-git clone [https://github.com/Krev3tka/Ponyfetch.git](https://github.com/Krev3tka/Ponyfetch.git)
+git clone https://github.com/Krev3tka/Ponyfetch.git
 cd Ponyfetch
 go build -o ponyfetch cmd/main.go
-mv ponyfetch /usr/local/bin/ # Optional: move to PATH
+./ponyfetch
 ```
 
 ## Usage
@@ -29,6 +29,12 @@ Available Flags:
 | `-s` | `--size` | Art size (`little` or `normal`) | `normal` |
 | `-h` | `--help` | Show manual for utility | |
 | `-c` | `--color` | Art color (all ANSI colors, like `red`, `blue`, `green`, etc.)| reset |
+| `-f` | `--filename` | File name or path to custom ASCII art, requires .txt format | |
+
+#### Short flags are not working now
+
+
+### Usage examples
 
 ```Bash
 # Run with default Twilight art
