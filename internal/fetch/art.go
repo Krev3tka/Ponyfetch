@@ -78,6 +78,8 @@ func PrintFetch(ponyName string, size string, color string, filename string) {
 	infoLines = append(infoLines, "OS: "+GetOSInfo())
 	infoLines = append(infoLines, "Shell: "+GetShell())
 	infoLines = append(infoLines, "DE: "+GetDesktopEnvironment())
+	infoLines = append(infoLines, "Uptime: "+GetUptime())
+	infoLines = append(infoLines, "Packages: "+GetPackages())
 	infoLines = append(infoLines, "")
 	infoLines = append(infoLines, "Hardware")
 	infoLines = append(infoLines, "CPU: "+GetCPU())

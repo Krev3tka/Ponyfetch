@@ -88,27 +88,3 @@ func GetGPU() string {
 
 	return "Unknown GPU"
 }
-
-func GetGPU() string {
-	output, err := exec.Command("lspci").Output()
-	if err != nil {
-		return "Uknown GPU"
-	}
-	scanner := bufio.NewScanner(strings.NewReader(string(output)))
-	for scanner.Scan() {
-		line := scanner.Text()
-
-		if strings.Contains(line, "VGA compatible controller") || strings.Contains(line, "3D controller") {
-			parts := strings.Split(line, ".0")
-			if len(parts) > 1 {
-				return strings.Trim(parts[1], `"`)
-			}
-
-			if len(line) > 7 {
-				return strings.TrimSpace(line[7:])
-			}
-		}
-	}
-
-	return "Unknown GPU"
-}
